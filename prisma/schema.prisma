@@ -12,3 +12,86 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  ADMIN
+  USER
+  SELLER
+}
+
+model User {
+  id       String    @id @default(uuid())
+  name     String
+  email    String    @unique
+  password String
+  img      String
+  Reviews  Reviews[]
+  role     UserRole  @default(USER)
+  Shop     Shop[]
+  Billing  Billing[]
+}
+
+model Shop {
+  id       String    @id @default(uuid())
+  name     String
+  products Product[]
+  ownerId  String
+  owner    User      @relation(fields: [ownerId], references: [id])
+}
+
+model Product {
+  id            String    @id @default(uuid())
+  name          String
+  description   String
+  price         Float
+  quantity      Int
+  primaryImg    String
+  showcaseImage String[]
+  tag           String[]
+  Designer      Designer? @relation(fields: [designerId], references: [id])
+  designerId    String?
+  type          Type?     @relation(fields: [typeId], references: [id])
+  typeId        String?
+  Reviews       Reviews[]
+  Shop          Shop?     @relation(fields: [shopId], references: [id])
+  shopId        String?
+}
+
+model Designer {
+  id       String    @id @default(uuid())
+  name     String
+  products Product[]
+}
+
+model Type {
+  id       String    @id @default(uuid())
+  name     String
+  products Product[]
+}
+
+model Reviews {
+  id        String  @id @default(uuid())
+  rating    Int
+  comment   String
+  userId    String
+  productId String
+  user      User    @relation(fields: [userId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id])
+}
+
+model Contact {
+  id          String @id @default(uuid())
+  firstName   String
+  lastName    String
+  phoneNumber Int
+  email       String
+  message     String
+}
+
+model Billing {
+  id         String @id @default(uuid())
+  userId     String
+  cardNumber String
+  expiration String
+  user       User   @relation(fields: [userId], references: [id])
+}
