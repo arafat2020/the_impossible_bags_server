@@ -37,3 +37,17 @@ export class CreateUserDto extends createZodDto(CreateUserSchema) {
     img: Express.Multer.File;
 
 }
+
+export class SignInDto {
+    @ApiProperty({
+      description: 'User email for sign-in',
+      example: 'john.doe@example.com',
+    })
+    email: string;
+  
+    @ApiProperty({
+      description: 'User password for sign-in',
+      example: 'strongpassword123',
+    })
+    password: string;
+  }

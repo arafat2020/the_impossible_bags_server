@@ -1,8 +1,9 @@
-import { Body, Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './auth.dto';
-import { ApiConsumes } from '@nestjs/swagger';
+import { CreateUserDto, SignInDto} from './auth.dto';
+import { ApiConsumes, ApiOkResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -10,7 +11,6 @@ export class AuthController {
         private readonly authService: AuthService
     ){}
 
-    @Post('signup')
     @Post('signup')
     @ApiConsumes('multipart/form-data') // 🚀 Important for Swagger/OpenAPI
     @UseInterceptors(FileInterceptor('img'))
@@ -24,4 +24,10 @@ export class AuthController {
     ) img: Express.Multer.File) {
         return this.authService.signUp({userData, img});
     }
+
+    @Post("signIn")
+    public async signIn(@Body() userData: SignInDto) {
+        return this.authService.signIn(userData)
+    }
+
 }
