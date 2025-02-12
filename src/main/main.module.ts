@@ -7,6 +7,13 @@ import { BillingsModule } from './billings/billings.module';
 import { ContactModule } from './contact/contact.module';
 
 @Module({
-  imports: [AuthModule, ProductsModule, ReviewsModule, BagTypeModule, BillingsModule, ContactModule]
+  imports: [
+    AuthModule,
+    ProductsModule,
+    ReviewsModule,
+    BagTypeModule,
+    BillingsModule,
+    ContactModule,
+  ],
 })
 export class MainModule {}
