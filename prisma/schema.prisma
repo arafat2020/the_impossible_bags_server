@@ -20,15 +20,15 @@ enum UserRole {
 }
 
 model User {
-  id       String       @id @default(uuid())
+  id       String        @id @default(uuid())
   name     String
-  email    String       @unique
+  email    String        @unique
   password String
   Reviews  Reviews[]
-  role     UserRole     @default(USER)
+  role     UserRole      @default(USER)
   Shop     Shop[]
   Billing  Billing[]
-  img     FileInstance?
+  img      FileInstance?
 }
 
 model Shop {
@@ -40,20 +40,20 @@ model Shop {
 }
 
 model Product {
-  id            String    @id @default(uuid())
+  id            String         @id @default(uuid())
   name          String
   description   String
   price         Float
   quantity      Int
-  primaryImg    String
-  showcaseImage String[]
+  primaryImg    FileInstance?
+  showcaseImage ShowcaseImage?
   tag           String[]
-  Designer      Designer? @relation(fields: [designerId], references: [id])
+  Designer      Designer?      @relation(fields: [designerId], references: [id])
   designerId    String?
-  type          Type?     @relation(fields: [typeId], references: [id])
+  type          Type?          @relation(fields: [typeId], references: [id])
   typeId        String?
   Reviews       Reviews[]
-  Shop          Shop?     @relation(fields: [shopId], references: [id])
+  Shop          Shop?          @relation(fields: [shopId], references: [id])
   shopId        String?
 }
 
@@ -96,12 +96,23 @@ model Billing {
   user       User   @relation(fields: [userId], references: [id])
 }
 
+model ShowcaseImage {
+  id        String         @id @default(uuid())
+  file      FileInstance[]
+  Product   Product?       @relation(fields: [productId], references: [id])
+  productId String?        @unique
+}
+
 model FileInstance {
-  id        String   @id @default(uuid())
-  fileUrl   String
-  fileId    String
-  bucket    String
-  createdAt DateTime @default(now())
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  id              String         @id @default(uuid())
+  fileUrl         String
+  fileId          String
+  bucket          String
+  createdAt       DateTime       @default(now())
+  User            User?          @relation(fields: [userId], references: [id])
+  userId          String?        @unique
+  primaryImg      Product?       @relation(fields: [primaryImgId], references: [id])
+  primaryImgId    String?        @unique
+  ShowcaseImage   ShowcaseImage? @relation(fields: [showcaseImageId], references: [id])
+  showcaseImageId String?
 }

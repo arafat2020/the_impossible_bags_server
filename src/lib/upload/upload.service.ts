@@ -31,7 +31,7 @@ export class UploadService {
         userId
     }:{
         file: Express.Multer.File,
-        userId
+        userId?: string
     }): Promise<FileInstance> {
         const bucketName = this.config.getOrThrow<string>('AWS_BUCKET_NAME');
         const fileId = uuid4().toString()
@@ -66,12 +66,12 @@ export class UploadService {
         return signedUrl;
     }
 
-    async deleteFile(fileName: string): Promise<void> {
+    async deleteFile(Key: string): Promise<void> {
         const bucketName = this.config.getOrThrow<string>('AWS_BUCKET_NAME');
 
         await this.s3Client.send(new DeleteObjectCommand({
             Bucket: bucketName,
-            Key: fileName,
+            Key,
         }));
     }
 }
