@@ -48,6 +48,7 @@ model Product {
   primaryImg    FileInstance?
   showcaseImage ShowcaseImage?
   tag           String[]
+  color         String[]
   Designer      Designer?      @relation(fields: [designerId], references: [id])
   designerId    String?
   type          Type?          @relation(fields: [typeId], references: [id])
