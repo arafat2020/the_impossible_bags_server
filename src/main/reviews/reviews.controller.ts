@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Param, Put, Delete, Get } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto, UpdateReviewDto } from './review.dto';
+import { IdDto } from 'src/common/id.dto';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -15,7 +16,7 @@ export class ReviewsController {
   // Update an existing review
   @Put(':id')
   async updateReview(
-    @Param('id') id: string,
+    @Param() id: string,
     @Body() updateReviewDto: UpdateReviewDto
   ) {
     // Only keep the fields from updateReviewDto that are not the id
@@ -26,19 +27,19 @@ export class ReviewsController {
 
   // Delete a review
   @Delete(':id')
-  async deleteReview(@Param('id') id: string) {
+  async deleteReview(@Param() id: IdDto) {
     return await this.reviewsService.deleteReview(id);
   }
 
   // Get all reviews for a product
-  @Get('product/:productId')
-  async getReviewsForProduct(@Param('productId') productId: string) {
+  @Get('product/:id')
+  async getReviewsForProduct(@Param() productId: IdDto) {
     return await this.reviewsService.getReviewsForProduct(productId);
   }
 
   // Get a review by ID
   @Get(':id')
-  async getReviewById(@Param('id') id: string) {
+  async getReviewById(@Param() id: IdDto) {
     return await this.reviewsService.getReviewById(id);
   }
 }

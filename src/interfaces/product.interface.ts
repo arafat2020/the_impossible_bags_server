@@ -22,6 +22,15 @@ export const CreateProductSchema = z.object({
   price: z.number().nonnegative(), // Price must be a positive number
   quantity: z.number().int().nonnegative(), // Quantity must be a non-negative integer
   tag: z.array(z.string()),
+  color: z.array(z.string()),
+  primaryImg: z.object({
+    fieldname: z.string(),
+    originalname: z.string(),
+    encoding: z.string(),
+    mimetype: z.string(),
+    buffer: z.instanceof(Buffer), // Ensures file content is a Buffer
+    size: z.number().max(5 * 1024 * 1024, "File size must be under 5MB"), // File size limit (optional)
+  })
 })
 
 export const UpdateProductSchema = z.object({

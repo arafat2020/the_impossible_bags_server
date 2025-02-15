@@ -3,6 +3,7 @@ import { DbService } from 'src/db/db.service'; // Adjust path as per your setup
 import { CreateReviewDto, UpdateReviewDto } from './review.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Reviews} from '@prisma/client';
+import { IdDto } from 'src/common/id.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -57,7 +58,7 @@ export class ReviewsService {
   }
 
   // Delete a review
-  public async deleteReview(id: string) {
+  public async deleteReview({id}:IdDto) {
     await this.isExists(id); // Check if the review exists before deleting
 
     await this.db.reviews.delete({
@@ -71,9 +72,9 @@ export class ReviewsService {
   }
 
   // Get all reviews for a product or a user
-  public async getReviewsForProduct(productId: string) {
+  public async getReviewsForProduct({id}:IdDto) {
     const reviews = await this.db.reviews.findMany({
-      where: { productId },
+      where: { productId: id },
       include: {
         user: true, // Include user details
       }
@@ -82,7 +83,7 @@ export class ReviewsService {
   }
 
   // Get a review by ID
-  public async getReviewById(id: string) {
+  public async getReviewById({id}:IdDto) {
     const review = await this.isExists(id); // Reuse the isExists function to fetch review
     return review;
   }

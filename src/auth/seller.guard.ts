@@ -10,11 +10,10 @@ export class SellerGuard extends AuthGuard {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
+    console.log(user.role === $Enums.UserRole.SELLER);
 
-    if (user.role !== $Enums.UserRole.USER) {
-      throw new ForbiddenException('Access Denied. Only sellers can perform this action.');
-    }
+    if (user.role === $Enums.UserRole.SELLER) return true;
+    throw new ForbiddenException('Access Denied. Only sellers can perform this action.');
 
-    return true;
   }
 }
