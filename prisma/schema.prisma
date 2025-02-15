@@ -29,6 +29,15 @@ model User {
   Shop     Shop[]
   Billing  Billing[]
   img      FileInstance?
+  wWshList wWshList?
+  stripeAccount String?
+}
+
+model wWshList {
+  id       String    @id @default(uuid())
+  userId   String?   @unique
+  user     User?     @relation(fields: [userId], references: [id])
+  products Product[]
 }
 
 model Shop {
@@ -56,6 +65,10 @@ model Product {
   Reviews       Reviews[]
   Shop          Shop?          @relation(fields: [shopId], references: [id])
   shopId        String?
+  wWshList      wWshList?      @relation(fields: [wWshListId], references: [id])
+  wWshListId    String?
+  Billing       Billing?       @relation(fields: [billingId], references: [id])
+  billingId     String?
 }
 
 model Designer {
@@ -90,11 +103,12 @@ model Contact {
 }
 
 model Billing {
-  id         String @id @default(uuid())
+  id         String    @id @default(uuid())
   userId     String
   cardNumber String
-  expiration String
-  user       User   @relation(fields: [userId], references: [id])
+  product    Product[]
+  user       User      @relation(fields: [userId], references: [id])
+  billingId  String
 }
 
 model ShowcaseImage {
