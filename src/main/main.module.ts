@@ -6,6 +6,7 @@ import { BagTypeModule } from './bag-type/bag-type.module';
 import { BillingsModule } from './billings/billings.module';
 import { ContactModule } from './contact/contact.module';
 import { DesignerModule } from './designer/designer.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DesignerModule } from './designer/designer.module';
     BillingsModule,
     ContactModule,
     DesignerModule,
+    WishlistModule,
   ],
 })
 export class MainModule {}
